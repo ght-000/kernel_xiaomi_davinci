@@ -99,20 +99,23 @@ jobs:
             ln -sf ../KernelSU/kernel drivers/kernelsu
           fi
 
-          make vendor/davinci_user_defconfig
+          MAKE_ARGS="ARCH=arm64 SUBARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-"
+          echo "MAKE_ARGS=$MAKE_ARGS" >> $GITHUB_ENV
+
+          make $MAKE_ARGS vendor/davinci_user_defconfig
 
           if [ "$ENABLE_DROIDSPACES" = "true" ]; then
             cat arch/arm64/configs/droidspaces.config >> .config
-            make olddefconfig
+            make $MAKE_ARGS olddefconfig
           fi
 
           if [ "$ENABLE_BAKASU" = "true" ]; then
             cat arch/arm64/configs/bakasu.config >> .config
-            make olddefconfig
+            make $MAKE_ARGS olddefconfig
           else
             sed -i '/CONFIG_KSU/d' .config
             echo "# CONFIG_KSU is not set" >> .config
-            make olddefconfig
+            make $MAKE_ARGS olddefconfig
           fi
 
       - name: Build kernel
@@ -124,7 +127,7 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-android-
           export CROSS_COMPILE_ARM32=arm-linux-androideabi-
 
-          make -j$(nproc) Image.gz
+          make $MAKE_ARGS -j$(nproc) Image.gz
           cat arch/arm64/boot/Image.gz tools/orig_dtbs.bin > arch/arm64/boot/Image.gz-dtb
 
       - name: Fetch manager
