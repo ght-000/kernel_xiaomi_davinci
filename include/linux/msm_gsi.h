@@ -2110,12 +2110,6 @@ static inline int gsi_enable_flow_control_ee(unsigned int chan_idx,
 	return -GSI_STATUS_UNSUPPORTED_OP;
 }
 
-static inline int gsi_enable_flow_control_ee(unsigned int chan_idx,
-			unsigned int ee, int *code)
-{
-	return -GSI_STATUS_UNSUPPORTED_OP;
-}
-
 static inline void gsi_wdi3_write_evt_ring_db(
 	unsigned long chan_hdl, uint32_t db_addr_low,
 	uint32_t db_addr_high)

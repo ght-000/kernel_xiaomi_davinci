@@ -38,6 +38,7 @@
 #include <linux/unistd.h>
 #include <linux/initrd.h>
 #include <linux/init.h>
+#include <linux/pinctrl/consumer.h>
 #include <linux/string.h>
 #include <asm/uaccess.h>
 #include <linux/poll.h>

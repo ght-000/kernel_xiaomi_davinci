@@ -130,3 +130,18 @@ kernel/configs/android-*.cfg
 #Ignoring Android.bp link file
 #
 Android.bp
+
+dist/
+toolchain/
+clang/
+gcc64/
+gcc32/
+KernelSU/
+
+# Unignore necessary config and CI files
+!.github/
+!.github/**
+!patches/
+!patches/**
+!tools/orig_dtbs.bin
+drivers/platform/msm/ipa/ipa_common

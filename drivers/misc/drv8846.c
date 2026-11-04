@@ -38,6 +38,7 @@
 #include <linux/mutex.h>
 #include <linux/spinlock.h>
 #include <linux/pwm.h>
+#include <linux/pinctrl/consumer.h>
 #include <linux/mm.h>
 #include <linux/of.h>
 #include <linux/of_device.h>

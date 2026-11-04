@@ -48,6 +48,7 @@
 #include <linux/spinlock.h>
 #include <linux/rwsem.h>
 #include <linux/workqueue.h>
+#include <linux/pinctrl/consumer.h>
 #include <linux/errno.h>
 #include <linux/types.h>
 #include <linux/wait.h>
