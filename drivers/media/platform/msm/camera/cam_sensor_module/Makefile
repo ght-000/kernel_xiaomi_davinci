@@ -1,3 +1,13 @@
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_res_mgr
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_sensor_utils
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_cci
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_sensor_io
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_csiphy
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_actuator
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_sensor
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_flash
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_eeprom
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sensor_module/cam_ois
 obj-$(CONFIG_SPECTRA_CAMERA) += cam_res_mgr/
 obj-$(CONFIG_SPECTRA_CAMERA) += cam_sensor_utils/
 obj-$(CONFIG_SPECTRA_CAMERA) += cam_cci/

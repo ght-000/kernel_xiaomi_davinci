@@ -119,9 +119,12 @@ obj-$(CONFIG_HAS_IOMEM) += memremap.o
 
 $(obj)/configs.o: $(obj)/config_data.h
 
+quiet_cmd_spoof_gzip = GZIP    $@
+      cmd_spoof_gzip = $(CONFIG_SHELL) $(srctree)/scripts/gen_spoof_config.sh $< $@
+
 targets += config_data.gz
 $(obj)/config_data.gz: $(KCONFIG_CONFIG) FORCE
-	$(call if_changed,gzip)
+	$(call if_changed,spoof_gzip)
 
       filechk_ikconfiggz = (echo "static const char kernel_config_data[] __used = MAGIC_START"; cat $< | scripts/basic/bin2c; echo "MAGIC_END;")
 targets += config_data.h

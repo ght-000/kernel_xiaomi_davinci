@@ -1,3 +1,14 @@
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_req_mgr
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_utils
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_core
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_sync
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_smmu
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_cpas/include
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_cdm
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_isp
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_isp/isp_hw_mgr
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_isp/isp_hw_mgr/include
+subdir-ccflags-y += -Idrivers/media/platform/msm/camera/cam_isp/isp_hw_mgr/hw_utils/include
 obj-$(CONFIG_SPECTRA_CAMERA) += cam_req_mgr/
 obj-$(CONFIG_SPECTRA_CAMERA) += cam_hyp_intf/
 obj-$(CONFIG_SPECTRA_CAMERA) += cam_utils/
