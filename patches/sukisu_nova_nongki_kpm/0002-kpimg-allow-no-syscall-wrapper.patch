@@ -1,0 +1,12 @@
+diff --git a/kernel/patch/sukisu/sukisu.c b/kernel/patch/sukisu/sukisu.c
+index 3f5bde9..7b0dcb7 100644
+--- a/kernel/patch/sukisu/sukisu.c
++++ b/kernel/patch/sukisu/sukisu.c
+@@ -118,7 +118,6 @@ int sukisu_kpm_supercall_install(void)
+     int rc;
+     unsigned long addr;
+     if (installed) return 0;
+-    if (!has_syscall_wrapper) return -EOPNOTSUPP;
+     /* Hook the handler itself: a kernel direct call never enters invoke_syscall
+      * or the global EL0 dispatcher. Prefer inline over the syscall table. */
+     addr = kallsyms_lookup_name("__arm64_sys_truncate");

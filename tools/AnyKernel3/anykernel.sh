@@ -37,8 +37,8 @@ PATCH_VBMETA_FLAG=auto;
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh;
 
-# boot install
-dump_boot;
+# boot install (SAR / ramdisk-less boot.img)
+split_boot;
 
-write_boot;
+flash_boot;
 ## end boot install

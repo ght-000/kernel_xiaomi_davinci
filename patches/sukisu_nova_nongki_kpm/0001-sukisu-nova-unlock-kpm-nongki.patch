@@ -1,0 +1,48 @@
+diff --git a/kernel/extension/kpm/kpm.c b/kernel/extension/kpm/kpm.c
+index 67e03c33..4f686c5f 100644
+--- a/kernel/extension/kpm/kpm.c
++++ b/kernel/extension/kpm/kpm.c
+@@ -20,6 +20,16 @@
+ /* Legacy INFO has no capacity argument. Existing ksud allocates 256 bytes. */
+ #define KPM_INFO_LEN 256
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 0) && defined(CONFIG_ARM64)
++extern asmlinkage long sys_truncate(const char __user *path, long length);
++asmlinkage long __nocfi noinline __arm64_sys_truncate(const struct pt_regs *regs)
++{
++    if (!regs)
++        return -EINVAL;
++    return sys_truncate((const char __user *)regs->regs[0], (long)regs->regs[1]);
++}
++#endif
++
+ long __nocfi sukisu_kpm_bridge(unsigned long op, unsigned long a1, unsigned long a2,
+                               unsigned long a3, unsigned long a4)
+ {
+diff --git a/kernel/extension/kpm/super_access.c b/kernel/extension/kpm/super_access.c
+index 6cd97077..4e08e104 100644
+--- a/kernel/extension/kpm/super_access.c
++++ b/kernel/extension/kpm/super_access.c
+@@ -153,7 +153,9 @@ DEFINE_MEMBER(task_struct, parent)
+ DEFINE_MEMBER(task_struct, group_leader)
+ DEFINE_MEMBER(task_struct, mm)
+ DEFINE_MEMBER(task_struct, active_mm)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0)
+ DEFINE_MEMBER(task_struct, thread_pid)
++#endif
+ DEFINE_MEMBER(task_struct, files)
+ DEFINE_MEMBER(task_struct, seccomp)
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+diff --git a/kernel/kernel_compat.h b/kernel/kernel_compat.h
+index f6f720eb..3f146dc6 100644
+--- a/kernel/kernel_compat.h
++++ b/kernel/kernel_compat.h
+@@ -358,7 +358,7 @@ struct ksu_static_key_true_false { struct static_key key; };
+  * runtime hooks. CPU spoof is not gated: cpu_spoof.c selects the kernel
+  * ABI it needs per version and works back to 3.4.
+  */
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 10, 0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0)
+ #define KSU_CAN_USE_KPM
+ #endif
+ 
