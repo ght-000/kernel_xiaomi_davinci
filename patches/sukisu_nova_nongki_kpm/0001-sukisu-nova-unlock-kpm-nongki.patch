@@ -1,3 +1,30 @@
+diff --git a/kernel/extension/dynamic_manager.c b/kernel/extension/dynamic_manager.c
+index d578aaf4..76579ff2 100644
+--- a/kernel/extension/dynamic_manager.c
++++ b/kernel/extension/dynamic_manager.c
+@@ -32,7 +32,7 @@ struct dynamic_manager_state {
+ 	struct ksu_manager_entry entries[KSU_MAX_DYNAMIC_MANAGERS];
+ };
+ 
+-static DEFINE_RWLOCK(dynamic_manager_lock);
++static rwlock_t dynamic_manager_lock = { .raw_lock = __ARCH_RW_LOCK_UNLOCKED };
+ static DEFINE_MUTEX(dynamic_manager_update_lock);
+ bool dynamic_manager_enabled = false;
+ static struct ksu_manager_entry dynamic_managers[KSU_MAX_DYNAMIC_MANAGERS];
+diff --git a/kernel/extension/kpm/compact.c b/kernel/extension/kpm/compact.c
+index 6eab7dc8..074ed911 100644
+--- a/kernel/extension/kpm/compact.c
++++ b/kernel/extension/kpm/compact.c
+@@ -20,7 +20,9 @@
+ #include <asm/cacheflush.h>
+ #include <linux/module.h>
+ #include <linux/vmalloc.h>
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 12, 0)
+ #include <linux/set_memory.h>
++#endif
+ #include <linux/version.h>
+ #include <linux/export.h>
+ #include <linux/slab.h>
 diff --git a/kernel/extension/kpm/kpm.c b/kernel/extension/kpm/kpm.c
 index 67e03c33..4f686c5f 100644
 --- a/kernel/extension/kpm/kpm.c
@@ -20,10 +47,20 @@ index 67e03c33..4f686c5f 100644
                                unsigned long a3, unsigned long a4)
  {
 diff --git a/kernel/extension/kpm/super_access.c b/kernel/extension/kpm/super_access.c
-index 6cd97077..4e08e104 100644
+index 6cd97077..2e67f32c 100644
 --- a/kernel/extension/kpm/super_access.c
 +++ b/kernel/extension/kpm/super_access.c
-@@ -153,7 +153,9 @@ DEFINE_MEMBER(task_struct, parent)
+@@ -20,7 +20,9 @@
+ #include <asm/cacheflush.h>
+ #include <linux/module.h>
+ #include <linux/vmalloc.h>
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 12, 0)
+ #include <linux/set_memory.h>
++#endif
+ #include <linux/version.h>
+ #include <linux/export.h>
+ #include <linux/slab.h>
+@@ -153,7 +155,9 @@ DEFINE_MEMBER(task_struct, parent)
  DEFINE_MEMBER(task_struct, group_leader)
  DEFINE_MEMBER(task_struct, mm)
  DEFINE_MEMBER(task_struct, active_mm)
@@ -33,8 +70,17 @@ index 6cd97077..4e08e104 100644
  DEFINE_MEMBER(task_struct, files)
  DEFINE_MEMBER(task_struct, seccomp)
  #ifdef CONFIG_THREAD_INFO_IN_TASK
+@@ -162,7 +166,7 @@ DEFINE_MEMBER(task_struct, thread_info)
+ #ifdef CONFIG_CGROUPS
+ DEFINE_MEMBER(task_struct, cgroups)
+ #endif
+-#ifdef CONFIG_SECURITY
++#if defined(CONFIG_SECURITY) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 0)
+ DEFINE_MEMBER(task_struct, security)
+ #endif
+ DEFINE_MEMBER(task_struct, thread)
 diff --git a/kernel/kernel_compat.h b/kernel/kernel_compat.h
-index f6f720eb..3f146dc6 100644
+index f6f720eb..b4d5b016 100644
 --- a/kernel/kernel_compat.h
 +++ b/kernel/kernel_compat.h
 @@ -358,7 +358,7 @@ struct ksu_static_key_true_false { struct static_key key; };
@@ -42,7 +88,7 @@ index f6f720eb..3f146dc6 100644
   * ABI it needs per version and works back to 3.4.
   */
 -#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 10, 0)
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
  #define KSU_CAN_USE_KPM
  #endif
  
